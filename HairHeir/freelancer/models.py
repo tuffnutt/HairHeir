@@ -28,7 +28,7 @@ class Freelancer(models.Model):
     city = models.CharField(max_length=50)
     id_no = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
-    rate = models.FloatField()
+    rate = models.FloatField(null=True)
     skill = models.ManyToManyField(Skill)
 
     def __str__(self):
@@ -38,32 +38,26 @@ class Freelancer(models.Model):
 class Job(models.Model):
     saloon_id = models.ForeignKey(Client, on_delete=models.CASCADE)
     freelancer_id = models.ForeignKey(Freelancer, on_delete=models.CASCADE)
-    duration = models.IntegerField
-    status = models.BooleanField
-
-    def __str__(self):
-        return self.id
+    duration = models.IntegerField(default=0)
+    status = models.BooleanField(default=False)
 
 
 class Payment(models.Model):
     job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
-    status = models.BooleanField
-    price = models.FloatField
-
-    def __str__(self):
-        return self.job_id
+    status = models.BooleanField(default=False)
+    price = models.FloatField(default=0.0)
 
 
 class Rate(models.Model):
     job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
-    rate = models.IntegerField
+    rate = models.IntegerField(default=0)
 
 
 class Schedule(models.Model):
     freelancer_id = models.ForeignKey(Freelancer, on_delete=models.CASCADE)
     saloon_id = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
-    date = models.DateField
-    status = models.BooleanField
+    date = models.DateField(null=True)
+    status = models.BooleanField(default=False)
 
 
 
