@@ -1,0 +1,90 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!------ Include the above in your HEAD tag ---------->
+
+<section class="search-banner  text-white py-5" id="search-banner" style=" background-image: url('static/img/background.jpg')"  >
+
+    <div class="container py-5 my-5" >
+    <div class="row text-center pb-4" >
+        <div class="col-md-12">
+            <h2>Find the Right Freelancer For your Business</h2>
+        </div>
+    </div>
+        <form action="{% url 'search'%}" method="post">
+            {% csrf_token %}
+    <div class="row" style=" opacity:0.8;" >
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group ">
+                          <select id="type" class="form-control" name="type" required >
+                            <option value="NULL" selected>Type</option>
+                              {%for type in types%}
+                            <option value="{{ type.pk}}">{{ type.name }}</option>
+                              {%endfor%}
+                          </select>
+                        </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group ">
+                          <select id="city" class="form-control" name="city" required>
+                            <option selected  value="NULL"> City</option>
+                             {%for city in cities%}
+                            <option value="{{ city.pk }}">{{ city.name }}</option>
+                              {%endfor%}
+                          </select>
+                        </div>
+                </div>
+                            <div class="col-md-1">
+                                 <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px; padding-top:6px;">Dates</p>
+                            </div>
+
+                          <div class="col-md-2">
+
+                           <div class="form-group">
+
+                                <div class='input-group date' id='datetimepicker1'>
+
+                                      <input type='text' class="form-control" name="from" required value="{{today}}"/>
+                                            <span class="input-group-addon">
+                                             <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                 </div>
+                             </div>
+                         </div>
+
+
+
+                        <div class="col-md-2">
+                           <div class="form-group">
+
+                                <div class='input-group date' id='datetimepicker2'>
+                                        <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px;opacity:0.8;">_</p>
+                                         <input type='text' class="form-control" name="to" required value="{{today}}"/>
+                                            <span class="input-group-addon">
+                                             <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                 </div>
+                             </div>
+                         </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-dark">Search</button>
+
+                </div>
+            </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+            </form>
+</div>
+</section>
+
+{% endblock %}
