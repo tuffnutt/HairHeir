@@ -2,20 +2,22 @@ import datetime
 from cgi import log
 
 from django.contrib.auth import login
+from django.db.models import Q
+
 from .models import User, City, Type
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.views.generic import CreateView, TemplateView
 
 from .forms import ClientSignUpForm, FreelancerSignUpForm
-from .models import Freelancer, Client, Type
+from .models import Freelancer, Client, Type, Schedule
 
 
 # Create your views here.
 def index(request):
     city = City.objects.all()
     types = Type.objects.all()
-    today = datetime.datetime.today().strftime('%d/%m/%Y')
+    today = datetime.datetime.today().strftime('%Y-%m-%d')
     context = {
         'cities': city,
         'types': types,
@@ -32,6 +34,17 @@ def freelancer(request, freelancer_id):
     }
     return render(request, 'booking/freelancer.html', context)
 
+
+def user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+
+    context = {
+        'user': user
+    }
+    if user.is_freelancer:
+        return render(request, 'booking/freelancer.html', context)
+    else:
+        return render(request, 'booking/client.html', context)
 
 def client(request, client_id):
     try:
@@ -82,33 +95,62 @@ class FreelancerSignUpView(CreateView):
 def Search(request):
     city = request.POST['city']
     types = request.POST['type']
+    start = request.POST['from']
+    end = request.POST['to']
 
     if (city == 'NULL') & (types == 'NULL'):
-        freelancer = Freelancer.objects.all()
+        freelancer_list = []
+
+        schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+        for schedule in schedules:
+            freelancer_list.append(schedule.freelancer_id)
+
+        freelancer = Freelancer.objects.all().exclude(pk__in=freelancer_list)
     elif city == 'NULL':
         user_list = []
+        freelancer_list = []
         users = User.objects.filter(is_freelancer=True)
         for user in users:
             user_list.append(user.pk)
 
-        freelancer = Freelancer.objects.filter(type__id=types, user__in=user_list)
+        schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+        for schedule in schedules:
+            freelancer_list.append(schedule.freelancer_id)
+
+        freelancer = Freelancer.objects.filter(type__id=types, user__in=user_list).exclude(pk__in=freelancer_list)
     elif types == 'NULL':
         user_list = []
+        freelancer_list = []
         users = User.objects.filter(is_freelancer=True, city=city)
         for user in users:
             user_list.append(user.pk)
+        schedules = Schedule.objects.filter(date__range=(start, end), status=True)
 
-        freelancer = Freelancer.objects.filter(user__in=user_list)
+        for schedule in schedules:
+            freelancer_list.append(schedule.freelancer_id)
+
+        freelancer = Freelancer.objects.filter(user__in=user_list).exclude(pk__in=freelancer_list)
     else:
         user_list = []
+        freelancer_list = []
         users = User.objects.filter(is_freelancer=True, city=city)
         for user in users:
             user_list.append(user.pk)
 
-        freelancer = Freelancer.objects.filter(type__id=types, user__in=user_list)
+        schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+        for schedule in schedules:
+            freelancer_list.append(schedule.freelancer_id)
 
+        freelancer = Freelancer.objects.filter(type__id=types, user__in=user_list).exclude(pk__in=freelancer_list)
 
+    city = City.objects.all()
+    types = Type.objects.all()
+    today = datetime.datetime.today().strftime('%Y-%m-%d')
     context = {
+        'cities': city,
+        'types': types,
+        'from': start,
+        'to': end,
         'users': freelancer
     }
     return render(request, 'booking/result.html', context)
