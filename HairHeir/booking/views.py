@@ -23,6 +23,7 @@ def index(request):
         'types': types,
         'today': today
     }
+
     return render(request, 'booking/index.html', context)
 
 
@@ -74,7 +75,7 @@ class ClientSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('/booking/client/' + str(user.pk))
+        return redirect('/user/' + str(user.pk))
 
 
 class FreelancerSignUpView(CreateView):
@@ -89,7 +90,7 @@ class FreelancerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('/booking/' + str(user.pk))
+        return redirect('/user/' + str(user.pk))
 
 
 def Search(request):
