@@ -1,97 +1,185 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+<script>
+
+   $(document).ready(function() {
+            $('#list').click(function(event){event.preventDefault();$('#products .item').addClass('list-group-item');});
+            $('#grid').click(function(event){event.preventDefault();$('#products .item').removeClass('list-group-item');$('#products .item').addClass('grid-group-item');});
+        });
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+    output.innerHTML = this.value;
+}
+
+
+</script>
+
 
 <center>
-<div class="container" style="margin-left: auto;margin-right: auto;">
-	<div class="row col-md-12">
-	        <form action="{% url 'search'%}" method="post">
-            {% csrf_token %}
-    <div class="row col-md-12" style=" opacity:0.8;" >
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
 
-                <div class="col-md-2">
-                    <div class="form-group ">
-                          <select id="type" class="form-control" name="type" required >
-                            <option value="NULL" selected>Type</option>
-                              {%for type in types%}
-                            <option value="{{ type.pk}}">{{ type.name }}</option>
-                              {%endfor%}
-                          </select>
-                        </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group ">
-                          <select id="city" class="form-control" name="city" required>
-                            <option selected  value="NULL"> City</option>
-                             {%for city in cities%}
-                            <option value="{{ city.pk }}">{{ city.name }}</option>
-                              {%endfor%}
-                          </select>
-                        </div>
-                </div>
-                            <div class="col-md-1">
-                                 <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px; padding-top:6px;">Dates</p>
-                            </div>
 
-                          <div class="col-md-2">
+    <div class="container" style="margin-left: auto;margin-right: auto;position:relative;z-index:100">
+        <div class="row col-md-12">
+            <form action="{% url 'advancedsearch'%}" method="post">
+                {% csrf_token %}
+                <div class="row col-md-12" style=" opacity:0.8;">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
 
-                           <div class="form-group">
+                                    <div class="col-md-2">
+                                        <div class="form-group ">
+                                            <select id="type" class="form-control" name="type" required>
+                                                <option value="NULL">Type</option>
+                                                {%for type in types%}
+                                                <option value="{{ type.pk}}">{{ type.name }}</option>
+                                                {%endfor%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group ">
+                                            <select id="city" class="form-control" name="city" required>
+                                                <option value="NULL"> City</option>
+                                                {%for city in cities%}
+                                                <option value="{{ city.pk }}">{{ city.name }}</option>
+                                                {%endfor%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px; padding-top:6px;">
+                                            Dates</p>
+                                    </div>
 
-                                <div class='input-group date' id='datetimepicker1'>
+                                    <div class="col-md-2">
 
-                                      <input type='text' class="form-control" name="from" required value="{{from}}"/>
-                                            <span class="input-group-addon">
+                                        <div class="form-group">
+
+                                            <div class='input-group date' id='datetimepicker1'>
+
+                                                <input type='text' class="form-control" name="from" required
+                                                       value="{{from}}"/>
+                                                <span class="input-group-addon">
                                              <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
-                                 </div>
-                             </div>
-                         </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 
+                                    <div class="col-md-2">
+                                        <div class="form-group">
 
-                        <div class="col-md-2">
-                           <div class="form-group">
-
-                                <div class='input-group date' id='datetimepicker2'>
-                                        <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px;opacity:0.8;">_</p>
-                                         <input type='text' class="form-control" name="to" required value="{{to}}"/>
-                                            <span class="input-group-addon">
+                                            <div class='input-group date' id='datetimepicker2'>
+                                                <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px;opacity:0.8;">
+                                                    _</p>
+                                                <input type='text' class="form-control" name="to" required
+                                                       value="{{to}}"/>
+                                                <span class="input-group-addon">
                                              <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
-                                 </div>
-                             </div>
-                         </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                <div class="col-md-1">
-                    <button type="submit" class="btn btn-dark">Search</button>
+                                    <div class="col-md-1">
 
-                </div>
 
-                         <div class="col-md-2">
-                                <div class="form-group ">
-                          <select id="sort" class="form-control" name="sort" style=" margin-left:25px; max-width:100px;">
-                              <option value="price" selected>Sort</option>
-                              <option value="price">Price</option>
-                          </select>
-                        </div>
+                                        <div class="input-group" id="adv-search">
+
+                                            <div class="input-group-btn">
+                                                <div class="btn-group" role="group">
+                                                    <div class="dropdown dropdown-lg"
+                                                         style="position:relative;z-index:500">
+                                                        <button type="button" class="btn btn-default dropdown-toggle"
+                                                                data-toggle="dropdown" aria-expanded="false"><span
+                                                                class="caret"></span></button>
+                                                        <div class="dropdown-menu dropdown-menu-right" role="menu"
+                                                        >
+                                                            <form class="form-horizontal" action="#"
+                                                                  role="form">
+                                                                <div class="form-group">
+                                                                    <label for="price">Maximum Price</label>
+                                                                    <input type="range" min="0" max="1000"
+                                                                           class="slider" id="price" name="price">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="contain">Minimum Ratings</label>
+                                                                    <input type="range" min="0" max="5" class="slider"
+                                                                           id="rating" name="rating">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <label for="contain">Gender</label>
+                                                                    </div>
+                                                                    <input type="radio" name="gender" id="all"
+                                                                           value="all" checked> All
+                                                                    <input type="radio" name="gender" id="male"
+                                                                           value="male"> Male
+                                                                    <input type="radio" name="gender" id="female"
+                                                                           value="female"> Female
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <label for="contain">Location</label>
+                                                                    </div>
+                                                                    <input type="radio" name="location" id="city1"
+                                                                           value="city1" checked> Same City
+                                                                    <input type="radio" name="location" id="district"
+                                                                           value="district"> Same District
+                                                                    <input type="radio" name="location" id="province"
+                                                                           value="province"> Same Province
+                                                                </div>
+                                                                <button class="btn btn-default" onclick="clear()">
+                                                                    Clear
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary"><span
+                                                                        class="glyphicon glyphicon-search"
+                                                                        aria-hidden="true"></span></button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary"><span
+                                                            class="glyphicon glyphicon-search"
+                                                            aria-hidden="true"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group ">
+                                            <select id="sort" class="form-control" name="sort"
+                                                    style=" margin-left:25px; max-width:100px;">
+                                                <option value="price" selected>Sort</option>
+                                                <option value="price">Price</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-            </div>
-                </div>
-            </div>
+                        </div>
 
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-            </form>
-	   </div>
-	</div>
 </center>
 
-<div class="container ">
-    <div class="row">
+<div class="container " style="position:relative;z-index:10">
+
+    <div class="row ">
         <div class="col-lg-12 my-3">
             <div class="pull-right">
                 <div class="btn-group">
@@ -106,31 +194,77 @@
         </div>
     </div>
 
-    <div id="products" class="row view-group">
-        {%for user in users%}
-                <div class="item col-xs-4 col-lg-3 " style="padding-bottom:15px;">
-                    <div class="thumbnail card">
-                        <div class="img-event">
-                            <img class="group list-group-image img-fluid" src="{{user.profile_picture.url}}" alt="" />
-                        </div>
-                        <div class="caption card-body">
-                            <h4 class="group card-title inner list-group-item-heading">
-                               {{user.user.first_name}} {{user.user.last_name}}</h4>
-                            <p class="group inner list-group-item-text">
-                                Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                                sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                            <div class="row">
-                                <div class="col-xs-12 col-md-6">
-                                    <p class="lead">
-                                        $21.000</p>
-                                </div>
-                                <div class="col-xs-12 col-md-6">
-                                    <a class="btn btn-success" href="#">Book Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div id="products" class="row view-group"
+    ">
+    {%for user in users%}
+    <div class="item col-xs-4 col-lg-3 " style="padding-bottom:15px;height:600px">
+        <div class="thumbnail card" style="height:550px">
+            <div class="img-event" style="padding-top:5px">
+                {%if user.profile_picture%}
+                <a href="/user/{{user.pk}}"><img class="group list-group-image img-fluid"
+                                                 src="{{user.profile_picture.url}}" height="200" width="200"
+                                                 alt=""/></a>
+                {%else%}
+                <a href="/user/{{user.pk}}"><img class="group list-group-image img-fluid"
+                                                 src="{% static 'img/profile.png' %}" height="200" width="200"
+                                                 alt=""></a>
+                {%endif%}
+
+            </div>
+            <div class="caption card-body">
+                <h4 class="group card-title inner list-group-item-heading">
+                    {{user.user.first_name}} {{user.user.last_name}}</h4>
+                <p class="group inner list-group-item-text">
+                    Ratings : {{user.rate}}<br>
+                    City : {{user.user.city.name}}<br><br>
+                    Skills :
+                    {%for skill in user.skill.all%}
+                <div class="btn btn-outline-info btn-sm disabled " style="margin-bottom:2px; padding: 1px 5px;
+                                                                                          font-size: 12px;
+                                                                                          line-height: 1.5;
+                                                                                          border-radius: 3px;">
+                    {{skill.category}} {{skill.name}}
                 </div>
-        {% endfor %}
+                {%endfor%}
+
+
+                </p>
+            </div>
+            <div class="row relative" style="margin-bottom:20px">
+                <div class="col-xs-12 col-md-6">
+                    <div class="btn btn-outline-danger  disabled" style="margin-bottom:2px">RS : {{user.price}}</div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <a class="btn btn-success" href="#">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
+</div>
+
+<script>
+document.getElementById("{{gender}}").checked = true;
+document.getElementById("{{location}}").checked = true;
+var price = document.getElementById('price');
+    price.value = {{price}};
+var rating = document.getElementById('rating');
+    rating.value = {{rating}};
+
+var type = document.getElementById('type');
+    type.value = {{type}};
+var city = document.getElementById('city');
+    city.value = {{city}};
+
+function clear() {
+    document.getElementById('all').checked = true;
+    document.getElementById('city1').checked = true;
+    document.getElementById('price').value = "1000";
+    document.getElementById('rating').value = "0";
+    document.getElementById('type').value = "NULL";
+    document.getElementById('city').value = "NULL";
+}
+
+</script>
 {% endblock %}

@@ -70,8 +70,15 @@ body {
   margin-top: 30px;
 }
 
+.profile-usermenu ul {
+  list-style-type: none;
+
+}
+
 .profile-usermenu ul li {
   border-bottom: 1px solid #f0f4f7;
+  text-align: left;
+
 }
 
 .profile-usermenu ul li:last-child {

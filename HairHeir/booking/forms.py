@@ -43,6 +43,7 @@ class FreelancerSignUpForm(UserCreationForm):
         user.is_freelancer = True
         user.save()
         freelancer = Freelancer.objects.create(user=user)
+        freelancer.profile_picture = 'HairHeir/static/img/profile.png'
         freelancer.skill.add(*self.cleaned_data.get('skills'))
         freelancer.type.add(*self.cleaned_data.get('types'))
         return user

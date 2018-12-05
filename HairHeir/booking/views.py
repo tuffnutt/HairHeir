@@ -10,7 +10,7 @@ from django.http import Http404
 from django.views.generic import CreateView, TemplateView
 
 from .forms import ClientSignUpForm, FreelancerSignUpForm
-from .models import Freelancer, Client, Type, Schedule
+from .models import Freelancer, Client, Type, Schedule, City, District, Province
 
 
 # Create your views here.
@@ -18,10 +18,12 @@ def index(request):
     city = City.objects.all()
     types = Type.objects.all()
     today = datetime.datetime.today().strftime('%Y-%m-%d')
+    topfive = Freelancer.objects.all().order_by('-rate')[:4]
     context = {
         'cities': city,
         'types': types,
-        'today': today
+        'today': today,
+        'topfive': topfive
     }
     return render(request, 'booking/index.html', context)
 
@@ -37,13 +39,23 @@ def freelancer(request, freelancer_id):
 
 def user(request, user_id):
     user = get_object_or_404(User, pk=user_id)
-
-    context = {
-        'user': user
-    }
     if user.is_freelancer:
+        schedules = Schedule.objects.filter(freelancer_id=user.pk)
+        date_list = []
+
+        for schedule in schedules:
+            date_list.append(schedule.date)
+
+        print(date_list)
+        context = {
+            'users': user,
+            'schedule': date_list
+        }
         return render(request, 'booking/freelancer.html', context)
     else:
+        context = {
+            'user': user
+        }
         return render(request, 'booking/client.html', context)
 
 def client(request, client_id):
@@ -74,7 +86,7 @@ class ClientSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('/booking/client/' + str(user.pk))
+        return redirect('/user/' + str(user.pk))
 
 
 class FreelancerSignUpView(CreateView):
@@ -89,7 +101,7 @@ class FreelancerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('/booking/' + str(user.pk))
+        return redirect('/user/' + str(user.pk))
 
 
 def Search(request):
@@ -143,14 +155,328 @@ def Search(request):
 
         freelancer = Freelancer.objects.filter(type__id=types, user__in=user_list).exclude(pk__in=freelancer_list)
 
-    city = City.objects.all()
-    types = Type.objects.all()
+    city1 = City.objects.all()
+    types1 = Type.objects.all()
     today = datetime.datetime.today().strftime('%Y-%m-%d')
     context = {
-        'cities': city,
-        'types': types,
+        'cities': city1,
+        'types': types1,
         'from': start,
         'to': end,
-        'users': freelancer
+        'type': types,
+        'city': city,
+        'users': freelancer,
+        'price': "1000",
+        'rating': "0",
+        'gender': 'all',
+        'location': 'city'
+
+    }
+    return render(request, 'booking/result.html', context)
+
+
+
+
+def AdvancedSearch(request):
+    city = request.POST['city']
+    types = request.POST['type']
+    start = request.POST['from']
+    end = request.POST['to']
+    pricerange = request.POST['price']
+    rate = request.POST['rating']
+    gender = request.POST['gender']
+    location = request.POST['location']
+
+
+    if (city == 'NULL') & (types == 'NULL'):
+        if gender == 'all':
+            freelancer_list = []
+
+            schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+            for schedule in schedules:
+                freelancer_list.append(schedule.freelancer_id)
+
+            freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5)).exclude(pk__in=freelancer_list)
+        else:
+            freelancer_list = []
+
+            schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+            for schedule in schedules:
+                freelancer_list.append(schedule.freelancer_id)
+
+            freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5), gender=gender).exclude(
+                pk__in=freelancer_list)
+    elif city == 'NULL':
+        if gender == 'all':
+            user_list = []
+            freelancer_list = []
+            users = User.objects.filter(is_freelancer=True)
+            for user in users:
+                user_list.append(user.pk)
+
+            schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+            for schedule in schedules:
+                freelancer_list.append(schedule.freelancer_id)
+
+            freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list)
+        else:
+            user_list = []
+            freelancer_list = []
+            users = User.objects.filter(is_freelancer=True)
+            for user in users:
+                user_list.append(user.pk)
+
+            schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+            for schedule in schedules:
+                freelancer_list.append(schedule.freelancer_id)
+
+            freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
+                                                   rate__range=(rate, 5), user__in=user_list, gender=gender).exclude(
+                pk__in=freelancer_list)
+    elif types == 'NULL':
+        if gender == 'all':
+            if location =='city1':
+                user_list = []
+                freelancer_list = []
+                users = User.objects.filter(is_freelancer=True, city=city)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list)
+            elif location == 'district':
+                user_list = []
+                freelancer_list = []
+                district = City.objects.get(pk=city).district
+                city_list = []
+                cities = City.objects.filter(district=district)
+                for ct in cities:
+                    city_list.append(ct.pk)
+
+                users = User.objects.filter(is_freelancer=True, city__in=city_list)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
+                                                       user__in=user_list).exclude(pk__in=freelancer_list)
+            else:
+                user_list = []
+                freelancer_list = []
+                province = City.objects.get(pk=city).district.pk
+                district = District.objects.filter(province=province)
+                district_list = []
+                for dt in district:
+                    district_list.append(dt.pk)
+                city_list = []
+                cities = City.objects.filter(district__in=district_list)
+                for ct in cities:
+                    city_list.append(ct.pk)
+
+                users = User.objects.filter(is_freelancer=True, city__in=city_list)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
+                                                       user__in=user_list).exclude(pk__in=freelancer_list)
+        else:
+            if location == 'city1':
+                user_list = []
+                freelancer_list = []
+                users = User.objects.filter(is_freelancer=True, city=city)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+            elif location == 'district':
+                user_list = []
+                freelancer_list = []
+                district = City.objects.get(pk=city).district
+                city_list = []
+                cities = City.objects.filter(district=district)
+                for ct in cities:
+                    city_list.append(ct.pk)
+
+                users = User.objects.filter(is_freelancer=True, city__in=city_list)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+            else:
+                user_list = []
+                freelancer_list = []
+                province = City.objects.get(pk=city).district.pk
+                district = District.objects.filter(province=province)
+                district_list = []
+                for dt in district:
+                    district_list.append(dt.pk)
+                city_list = []
+                cities = City.objects.filter(district__in=district_list)
+                for ct in cities:
+                    city_list.append(ct.pk)
+
+                users = User.objects.filter(is_freelancer=True, city__in=city_list)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+    else:
+        if gender == 'all':
+            if location =='city1':
+                user_list = []
+                freelancer_list = []
+                users = User.objects.filter(is_freelancer=True, city=city)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list)
+            elif location == 'district':
+                user_list = []
+                freelancer_list = []
+                district = City.objects.get(pk=city).district
+                city_list = []
+                cities = City.objects.filter(district=district)
+                for ct in cities:
+                    city_list.append(ct.pk)
+
+                users = User.objects.filter(is_freelancer=True, city__in=city_list)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5),
+                                                       user__in=user_list).exclude(pk__in=freelancer_list)
+            else:
+                user_list = []
+                freelancer_list = []
+                province = City.objects.get(pk=city).district.pk
+                district = District.objects.filter(province=province)
+                district_list = []
+                for dt in district:
+                    district_list.append(dt.pk)
+                city_list = []
+                cities = City.objects.filter(district__in=district_list)
+                for ct in cities:
+                    city_list.append(ct.pk)
+
+                users = User.objects.filter(is_freelancer=True, city__in=city_list)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5),
+                                                       user__in=user_list).exclude(pk__in=freelancer_list)
+        else:
+            if location == 'city1':
+                user_list = []
+                freelancer_list = []
+                users = User.objects.filter(is_freelancer=True, city=city)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
+                                                       rate__range=(rate, 5), user__in=user_list, gender=gender).exclude(
+                    pk__in=freelancer_list)
+            elif location == 'district':
+                user_list = []
+                freelancer_list = []
+                district = City.objects.get(pk=city).district
+                city_list = []
+                cities = City.objects.filter(district=district)
+                for ct in cities:
+                    city_list.append(ct.pk)
+
+                users = User.objects.filter(is_freelancer=True, city__in=city_list)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
+                                                       rate__range=(rate, 5),
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+            else:
+                user_list = []
+                freelancer_list = []
+                province = City.objects.get(pk=city).district.pk
+                district = District.objects.filter(province=province)
+                district_list = []
+                for dt in district:
+                    district_list.append(dt.pk)
+                city_list = []
+                cities = City.objects.filter(district__in=district_list)
+                for ct in cities:
+                    city_list.append(ct.pk)
+
+                users = User.objects.filter(is_freelancer=True, city__in=city_list)
+                for user in users:
+                    user_list.append(user.pk)
+                schedules = Schedule.objects.filter(date__range=(start, end), status=True)
+
+                for schedule in schedules:
+                    freelancer_list.append(schedule.freelancer_id)
+
+                freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
+                                                       rate__range=(rate, 5),
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+
+
+
+    city1 = City.objects.all()
+    types1 = Type.objects.all()
+    today = datetime.datetime.today().strftime('%Y-%m-%d')
+    context = {
+        'cities': city1,
+        'types': types1,
+        'from': start,
+        'to': end,
+        'type': types,
+        'city': city,
+        'users': freelancer,
+        'price': pricerange,
+        'rating': rate,
+        'gender': gender,
+        'location': location
     }
     return render(request, 'booking/result.html', context)

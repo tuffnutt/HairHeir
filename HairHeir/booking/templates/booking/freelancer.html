@@ -1,76 +1,322 @@
-
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+<script>
+
+ var user_busy_days      = ['2018-12-09','2018-12-16','2018-12-19'];
+ var date_list=[];
+{%for sch in schedule%}
+	var date='{{sch.year}}-{{sch.month}}-{{sch.day}}';
+	date_list.push(date);
+{%endfor%}
+
+	$(function () {
+        $('#datetimepicker3').datepicker({
+            format: "yyyy-mm-dd",
+            todayBtn: "linked",
+            multidate: "True",
+            daysOfWeekHighlighted: "5,6",
+            todayHighlight: true,
+            toggleActive: true,
+            orientation: "bottom auto",
+            datesDisabled: date_list,
+        });
+
+         $('#datetimepicker3').datepicker('setDates',date_list )
+
+    });
+
+
+</script>
+
+
 <div class="container">
     <div class="row profile">
-		<div class="col-md-3">
-			<div class="profile-sidebar">
-				<!-- SIDEBAR USERPIC -->
-				<div class="profile-userpic">
-					<img src="{{user.freelancer.profile_picture.url}}" class="img-responsive" alt="">
-				</div>
-				<!-- END SIDEBAR USERPIC -->
-				<!-- SIDEBAR USER TITLE -->
-				<div class="profile-usertitle">
-					<div class="profile-usertitle-name">
-						{{user.first_name}} {{user.last_name}}
-					</div>
-					<div class="profile-usertitle-job">
-						{{user.freelancer.rank}}
-					</div>
-				</div>
-				<!-- END SIDEBAR USER TITLE -->
-				<!-- SIDEBAR BUTTONS -->
-				<div class="profile-userbuttons">
-					<button type="button" class="btn btn-success btn-sm">Follow</button>
-					<button type="button" class="btn btn-danger btn-sm">Message</button>
-				</div>
-				<!-- END SIDEBAR BUTTONS -->
-                     <div class="stars">
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <!-- SIDEBAR USERPIC -->
+                <div class="profile-userpic">
+                    {%if users.freelancer.profile_picture%}
+                    <img src="{{users.freelancer.profile_picture.url}}" class="img-responsive" alt="">
+                    {%else%}
+                    <img src="{% static 'img/profile.png' %}" class="img-responsive" alt="">
+                    {%endif%}
+                </div>
+                <!-- END SIDEBAR USERPIC -->
+                <!-- SIDEBAR USER TITLE -->
+                <div class="profile-usertitle">
+
+                    <div class="profile-usertitle-name">
+                        {{users.first_name}} {{users.last_name}}
+                    </div>
+                    <div class="btn btn-outline-danger  disabled" style="margin-bottom:2px">RS :
+                        {{users.freelancer.price}}
+                    </div>
+                    <div class="profile-usertitle-job">
+                        {{users.freelancer.rank}}
+                    </div>
+                </div>
+                <!-- END SIDEBAR USER TITLE -->
+                <!-- SIDEBAR BUTTONS -->
+                <div class="profile-userbuttons">
+                    <button type="button" class="btn btn-success btn-sm">Favorite</button>
+                    <button type="button" class="btn btn-danger btn-sm">Book</button>
+                </div>
+                <!-- END SIDEBAR BUTTONS -->
+                <div class="stars">
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                </div>
+                {{users.freelancer.rate}}/5
+
+                <!-- SIDEBAR MENU -->
+                {%ifequal request.user.id users.pk%}
+                <div class="profile-usermenu">
+                    <ul class="nav-vertical">
+                        <li class="active">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                Edit Profile </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="glyphicon glyphicon-envelope"></i>
+                                Messages </a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank">
+                                <i class="glyphicon glyphicon-ok"></i>
+                                Requests</a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="glyphicon glyphicon-cog"></i>
+                                Settings </a>
+                        </li>
+                    </ul>
+                </div>
+                {%else%}
+                <div class="caption card-body">
+                    <p class="group inner list-group-item-text">
+                        City : {{users.city.name}}<br>
+
+                        {%for skill in users.freelancer.skill.all%}
+                    <div class="btn btn-outline-info btn-sm disabled " style="margin-bottom:2px; padding: 1px 5px;
+                                                                                          font-size: 12px;
+                                                                                          line-height: 1.5;
+                                                                                          border-radius: 3px;">
+                        {{skill.category}} {{skill.name}}
+                    </div>
+                    {%endfor%}
+
+
+                    </p>
+                </div>
+                {%endifequal%}
+                <!-- END MENU -->
+
+
+            </div>
+        </div>
+        <div class="container col-md-9">
+            <div class="profile-content row">
+                <div class="col-sm-1 col-md-1 col-lg-1">
+                </div>
+
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <h3>Shedule</h3>
+                    <div class='input-group date' id='datetimepicker3'>
                     </div>
 
-                	<!-- SIDEBAR MENU -->
-				<div class="profile-usermenu">
-					<ul class="nav">
-						<li class="active">
-							<a href="#">
-							<i class="glyphicon glyphicon-home"></i>
-							Overview </a>
-						</li>
-						<li>
-							<a href="#">
-							<i class="glyphicon glyphicon-user"></i>
-							Account Settings </a>
-						</li>
-						<li>
-							<a href="#" target="_blank">
-							<i class="glyphicon glyphicon-ok"></i>
-							Tasks </a>
-						</li>
-						<li>
-							<a href="#">
-							<i class="glyphicon glyphicon-flag"></i>
-							Help </a>
-						</li>
-					</ul>
-				</div>
-				<!-- END MENU -->
+
+                </div>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                    <h3>Gallery</h3>
+                    <div class="container">
+                        <div class="row" data-spy="scroll" style="height:330px;overflow-y: scroll;">
+
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space " style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
+                                     data-toggle="modal" data-target="#myModal" height="100" width="100">
+                                <!-- Modal -->
+
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg"
+                                     data-toggle="modal" data-target="#myModal1" height="100" width="100">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
+                                     data-toggle="modal" data-target="#myModal2" height="100" width="100">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space " style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
+                                     data-toggle="modal" data-target="#myModal" height="100" width="100">
+                                <!-- Modal -->
+
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg"
+                                     data-toggle="modal" data-target="#myModal1" height="100" width="100">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
+                                     data-toggle="modal" data-target="#myModal2" height="100" width="100">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space " style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
+                                     data-toggle="modal" data-target="#myModal" height="100" width="100">
+                                <!-- Modal -->
+
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg"
+                                     data-toggle="modal" data-target="#myModal1" height="100" width="100">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
+                                     data-toggle="modal" data-target="#myModal2" height="100" width="100">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space " style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
+                                     data-toggle="modal" data-target="#myModal" height="100" width="100">
+                                <!-- Modal -->
+
+                            </div>
+
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg"
+                                     data-toggle="modal" data-target="#myModal1" height="100" width="100">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-4 col-lg-4 col-sm-6 img_space" style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
+                                     data-toggle="modal" data-target="#myModal2" height="100" width="100">
+                                <!-- Modal -->
+                            </div>
+
+                        </div>
 
 
-			</div>
-		</div>
-		<div class="col-md-9">
-            <div class="profile-content">
-			   Some user related content goes here...
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
+                                <img class="img-responsive"
+                                     src="https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg">
+
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal1" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
+                                <img class="img-responsive img-thumbnail"
+                                     src="http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg">
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal2" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
+                                <img class="img-responsive img-thumbnail"
+                                     src="https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-		</div>
-	</div>
+        </div>
+
+        <div class="comments">
+
+            <div class="comment-wrap">
+                <div class="photo">
+                    <div class="avatar"
+                         style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg')"></div>
+                </div>
+                <div class="comment-block">
+                    <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus
+                        iste nostrum dolorem natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus
+                        architecto tempore, quaerat explicabo veniam fuga corporis totam reprehenderit quasi
+                        sapiente modi tempora at perspiciatis mollitia, dolores voluptate. Cumque, corrupti?</p>
+                    <div class="bottom-comment">
+                        <div class="comment-date">Aug 24, 2014 @ 2:35 PM</div>
+                        <ul class="comment-actions">
+                            <li class="complain">Complain</li>
+                            <li class="reply">Reply</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-wrap">
+                <div class="photo">
+                    <div class="avatar"
+                         style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
+                </div>
+                <div class="comment-block">
+                    <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus
+                        iste nostrum dolorem natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus
+                        architecto tempore, quaerat explicabo veniam fuga corporis totam.</p>
+                    <div class="bottom-comment">
+                        <div class="comment-date">Aug 23, 2014 @ 10:32 AM</div>
+                        <ul class="comment-actions">
+                            <li class="complain">Complain</li>
+                            <li class="reply">Reply</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+</div>
+</div>
+</div>
 </div>
 
 {% endblock %}

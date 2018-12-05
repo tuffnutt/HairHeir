@@ -12,7 +12,7 @@ class Province(models.Model):
 
 
 class District(models.Model):
-    province = models.OneToOneField(Province, on_delete=models.CASCADE, primary_key=True)
+    province = models.ForeignKey(Province, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -20,7 +20,7 @@ class District(models.Model):
 
 
 class City(models.Model):
-    province = models.OneToOneField(District, on_delete=models.CASCADE, primary_key=True)
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -46,7 +46,7 @@ class Client(models.Model):
     business_reg_no = models.CharField(max_length=100, null=True)
     owner_name = models.CharField(max_length=250, null=True)
     owner_id_no = models.CharField(max_length=20, null=True)
-    profile_picture = models.FileField(null=True)
+    profile_picture = models.FileField(null=True, default='profile.png')
 
     def __str__(self):
         return self.user.username
@@ -66,13 +66,19 @@ class Type(models.Model):
     def __str__(self):
         return self.name
 
+TIPOLOGIA_CHOICES = [
+    ("male", "Male"),
+    ("female", "Female"),
+]
 
 class Freelancer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     id_no = models.CharField(max_length=20, null=True)
     type = models.ManyToManyField(Type, related_name='types', null=True, blank=True)
-    rate = models.FloatField(null=True)
+    rate = models.FloatField(default=0.0)
+    price = models.FloatField(default=0.0)
     skill = models.ManyToManyField(Skill)
+    gender = models.CharField(max_length=20, choices=TIPOLOGIA_CHOICES, null=Type)
     profile_picture = models.FileField(null=True)
 
     def __str__(self):

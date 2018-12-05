@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Client, Freelancer, Payment, Skill, Rate, Job, Province, District, City, Type, Schedule
+from .models import Client, Freelancer, Payment, Skill, Rate, Job, Province, District, City, Type, Schedule, Gallery
 # Register your models here.
 
 admin.site.register(Client)
@@ -13,3 +13,4 @@ admin.site.register(District)
 admin.site.register(City)
 admin.site.register(Type)
 admin.site.register(Schedule)
+admin.site.register(Gallery)

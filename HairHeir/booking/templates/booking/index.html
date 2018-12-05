@@ -1,90 +1,283 @@
-
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
 <!------ Include the above in your HEAD tag ---------->
 
-<section class="search-banner  text-white py-5" id="search-banner" style=" background-image: url('static/img/background.jpg')"  >
+<section class="search-banner  text-white py-5" id="search-banner"
+         style=" background-image: url('static/img/background.jpg')">
 
-    <div class="container py-5 my-5" >
-    <div class="row text-center pb-4" >
-        <div class="col-md-12">
-            <h2>Find the Right Freelancer For your Business</h2>
+    <div class="container py-5 my-5">
+        <div class="row text-center pb-4">
+            <div class="col-md-12">
+                <h2 style="color:ash">Find the Right Freelancer For your Business</h2>
+            </div>
         </div>
-    </div>
         <form action="{% url 'search'%}" method="post">
             {% csrf_token %}
-    <div class="row" style=" opacity:0.8;" >
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                <div class="col-md-2">
-                    <div class="form-group ">
-                          <select id="type" class="form-control" name="type" required >
-                            <option value="NULL" selected>Type</option>
-                              {%for type in types%}
-                            <option value="{{ type.pk}}">{{ type.name }}</option>
-                              {%endfor%}
-                          </select>
-                        </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group ">
-                          <select id="city" class="form-control" name="city" required>
-                            <option selected  value="NULL"> City</option>
-                             {%for city in cities%}
-                            <option value="{{ city.pk }}">{{ city.name }}</option>
-                              {%endfor%}
-                          </select>
-                        </div>
-                </div>
-                            <div class="col-md-1">
-                                 <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px; padding-top:6px;">Dates</p>
-                            </div>
+            <div class="row" style=" opacity:0.8;">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group ">
+                                        <select id="type" class="form-control" name="type" required>
+                                            <option value="NULL" selected>Type</option>
+                                            {%for type in types%}
+                                            <option value="{{ type.pk}}">{{ type.name }}</option>
+                                            {%endfor%}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group ">
+                                        <select id="city" class="form-control" name="city" required>
+                                            <option selected value="NULL"> City</option>
+                                            {%for city in cities%}
+                                            <option value="{{ city.pk }}">{{ city.name }}</option>
+                                            {%endfor%}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px; padding-top:6px;">Dates</p>
+                                </div>
 
-                          <div class="col-md-2">
+                                <div class="col-md-2">
 
-                           <div class="form-group">
+                                    <div class="form-group">
 
-                                <div class='input-group date' id='datetimepicker1'>
+                                        <div class='input-group date' id='datetimepicker1'>
 
-                                      <input type='text' class="form-control" name="from" required value="{{today}}"/>
+                                            <input type='text' class="form-control" name="from" required
+                                                   value="{{today}}"/>
                                             <span class="input-group-addon">
-                                             <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                                             <span class="fas fa-calendar-alt" aria-hidden="true"></span>
                                             </span>
-                                 </div>
-                             </div>
-                         </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
+                                <div class="col-md-2">
+                                    <div class="form-group">
 
-                        <div class="col-md-2">
-                           <div class="form-group">
-
-                                <div class='input-group date' id='datetimepicker2'>
-                                        <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px;opacity:0.8;">_</p>
-                                         <input type='text' class="form-control" name="to" required value="{{today}}"/>
+                                        <div class='input-group date' id='datetimepicker2'>
+                                            <p style=" color:rgba(70,75,71,0.8) ;padding-right:5px;opacity:0.8;">_</p>
+                                            <input type='text' class="form-control" name="to" required
+                                                   value="{{today}}"/>
                                             <span class="input-group-addon">
                                              <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
-                                 </div>
-                             </div>
-                         </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-dark">Search</button>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-dark">Search</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
+        </form>
+    </div>
+
+    <h2>Sign up for a free account</h2>
+    <p class="lead">Select below the type of account you want to create</p>
+    <a href="{% url 'client_signup' %}" class="btn btn-student btn-lg" role="button">I'm a client</a>
+    <a href="{% url 'freelancer_signup' %}" class="btn btn-teacher btn-lg" role="button">I'm a freelancer</a>
+
+</section>
+{% endblock %}
+{% block content1 %}
+
+
+<br><h2>Top Rated Freelancers</h2><br>
+<div class="col-sm-2 col-md-2 col-lg-2 container"></div>
+<div class="col-sm-8 col-md-8 col-lg-8 container">
+    <div id="products" class="row view-group">
+        {%for user in topfive%}
+        <div class="item col-xs-4 col-lg-3 " style="padding-bottom:15px;height:600px">
+            <div class="thumbnail card" style="height:550px">
+                <div class="img-event" style="padding-top:5px">
+                    {%if user.profile_picture%}
+                    <a href="/user/{{user.pk}}"><img class="group list-group-image img-fluid"
+                                                     src="{{user.profile_picture.url}}" height="200" width="200"
+                                                     alt=""/></a>
+                    {%else%}
+                    <a href="/user/{{user.pk}}"><img class="group list-group-image img-fluid"
+                                                     src="{% static 'img/profile.png' %}" height="200" width="200"
+                                                     alt=""></a>
+                    {%endif%}
+
+                </div>
+                <div class="caption card-body">
+                    <h4 class="group card-title inner list-group-item-heading">
+                        {{user.user.first_name}} {{user.user.last_name}}</h4>
+                    <p class="group inner list-group-item-text">
+                        Ratings : {{user.rate}}<br>
+                        City : {{user.user.city.name}}<br><br>
+                        Skills :
+                        {%for skill in user.skill.all%}
+                    <div class="btn btn-outline-info btn-sm disabled " style="margin-bottom:2px; padding: 1px 5px;
+                                                                                          font-size: 12px;
+                                                                                          line-height: 1.5;
+                                                                                          border-radius: 3px;">
+                        {{skill.category}} {{skill.name}}
+                    </div>
+                    {%endfor%}
+
+
+                    </p>
+
+                </div>
+                <div class="row relative" style="margin-bottom:20px">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="btn btn-outline-danger  disabled" style="margin-bottom:2px">RS : {{user.price}}
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <a class="btn btn-success" href="#">Book Now</a>
+                    </div>
                 </div>
             </div>
-
+        </div>
+        {% endfor %}
+    </div>
+    <div class="how-section1">
+        <div class="row">
+            <div class="col-md-6 how-img">
+                <img src="https://image.ibb.co/dDW27U/Work_Section2_freelance_img1.png" class="rounded-circle img-fluid"
+                     alt=""/>
+            </div>
+            <div class="col-md-6">
+                <h4>Find rewarding projects</h4>
+                <h4 class="subheading">HairHeir is a great place to find more clients, and to run and grow your own
+                    freelance business.</h4>
+                <p class="text-muted">Freedom to work on ideal projects. On GetLance, you run your own business and
+                    choose your own clients and projects. Just complete your profile and we’ll highlight ideal jobs.
+                    Also search projects, and respond to client invitations.
+                    Wide variety and high pay. Clients are now posting jobs in hundreds of skill categories, paying top
+                    price for great work.
+                    More and more success. The greater the success you have on projects, the more likely you are to get
+                    hired by clients that use GetLance.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Get hired quickly</h4>
+                <h4 class="subheading">HairHeir makes it easy to connect with clients and begin doing great work.</h4>
+                <p class="text-muted">Streamlined hiring. GetLance’s sophisticated algorithms highlight projects you’re
+                    a great fit for.
+                    Top Rated and Rising Talent programs. Enjoy higher visibility with the added status of prestigious
+                    programs.
+                    Do substantial work with top clients. GetLance pricing encourages freelancers to use GetLance for
+                    repeat relationships with their clients.</p>
+            </div>
+            <div class="col-md-6 how-img">
+                <img src="https://image.ibb.co/cHgKnU/Work_Section2_freelance_img2.png" class="rounded-circle img-fluid"
+                     alt=""/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 how-img">
+                <img src="https://image.ibb.co/ctSLu9/Work_Section2_freelance_img3.png" class="rounded-circle img-fluid"
+                     alt=""/>
+            </div>
+            <div class="col-md-6">
+                <h4>Work efficiently, effectively.</h4>
+                <h4 class="subheading">With HairHeir, you have the freedom and flexibility to control when, where, and
+                    how you work. Each project includes an online workspace shared by you and your client, allowing you
+                    to:</h4>
+                <p class="text-muted">Send and receive files. Deliver digital assets in a secure environment.
+                    Share feedback in real time. Use GetLance Messages to communicate via text, chat, or video.
+                    Use our mobile app. Many features can be accessed on your mobile phone when on the go.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Get paid on time</h4>
+                <h4 class="subheading">All projects include GetLance Payment Protection — helping ensure that you get
+                    paid for all work successfully completed through the freelancing website.</h4>
+                <p class="text-muted">All invoices and payments happen through GetLance. Count on a simple and
+                    streamlined process.
+                    Hourly and fixed-price projects. For hourly work, submit timesheets through GetLance. For
+                    fixed-price jobs, set milestones and funds are released via GetLance escrow features.
+                    Multiple payment options. Choose a payment method that works best for you, from direct deposit or
+                    PayPal to wire transfer and more.</p>
+            </div>
+            <div class="col-md-6 how-img">
+                <img src="https://image.ibb.co/gQ9iE9/Work_Section2_freelance_img4.png" class="rounded-circle img-fluid"
+                     alt=""/>
+            </div>
+            <br>
         </div>
     </div>
-            </form>
 </div>
-</section>
+{% endblock %}
+
+{% block footer %}
+<footer class="section footer-classic context-dark bg-image" style="background: #2d3246;">
+    <div class="container">
+        <div class="row row-30">
+            <div class="col-md-4 col-xl-5">
+                <div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light"
+                                                                             src="images/agency/logo-inverse-140x37.png"
+                                                                             alt="" width="140" height="37"
+                                                                             srcset="images/agency/logo-retina-inverse-280x74.png 2x"></a>
+                    <p>We are an award-winning Freelancing agency, we make an environment to meet freelancers and
+                        clients. This platform is specially dedicated for saloons and saloon owners.
+                    </p><br>
+                    <br>
+                    <!-- Rights-->
+                    <p class="rights"><span>©  </span><span
+                            class="copyright-year">2018</span><span> </span><span>Waves</span><span>. </span><span>All Rights Reserved.</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h5>Contacts</h5>
+                <dl class="contact-list">
+                    <dt>Address:</dt>
+                    <dd>798 Kollupitiya, Colombo, Sri Lanka</dd>
+                </dl>
+                <dl class="contact-list">
+                    <dt>email:</dt>
+                    <dd><a href="mailto:#">hairheir@gmail.com</a></dd>
+                </dl>
+                <dl class="contact-list">
+                    <dt>phones:</dt>
+                    <dd><a href="tel:#">+94 7568543012</a> <span>or</span> <a href="tel:#">+94 9571195353</a>
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-md-4 col-xl-3">
+                <h5>Links</h5>
+                <ul class="nav-list">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Contacts</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row no-gutters social-container">
+        <div class="col"><a class="social-inner" href="#"><span
+                class="icon mdi mdi-facebook"></span><span>Facebook</span></a></div>
+        <div class="col"><a class="social-inner" href="#"><span
+                class="icon mdi mdi-instagram"></span><span>instagram</span></a></div>
+        <div class="col"><a class="social-inner" href="#"><span class="icon mdi mdi-twitter"></span><span>twitter</span></a>
+        </div>
+        <div class="col"><a class="social-inner" href="#"><span
+                class="icon mdi mdi-youtube-play"></span><span>google</span></a></div>
+    </div>
+</footer>
 
 {% endblock %}

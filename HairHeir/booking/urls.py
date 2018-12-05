@@ -18,4 +18,5 @@ urlpatterns = [
     path('accounts/signup/client/', views.ClientSignUpView.as_view(), name='client_signup'),
     path('accounts/signup/freelancer/', views.FreelancerSignUpView.as_view(), name='freelancer_signup'),
     path('search/', views.Search, name='search'),
+    path('advancedsearch/', views.AdvancedSearch, name='advancedsearch'),
 ]
