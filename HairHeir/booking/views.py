@@ -25,6 +25,7 @@ def index(request):
         'today': today,
         'topfive': topfive
     }
+
     return render(request, 'booking/index.html', context)
 
 
