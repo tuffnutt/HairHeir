@@ -2,6 +2,7 @@ import datetime
 from cgi import log
 
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
 from .models import User, City, Type
@@ -37,7 +38,7 @@ def freelancer(request, freelancer_id):
     }
     return render(request, 'booking/freelancer.html', context)
 
-
+@login_required
 def user(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     if user.is_freelancer:
@@ -106,12 +107,12 @@ class FreelancerSignUpView(CreateView):
 
 
 def Search(request):
-    city = request.POST['city']
-    types = request.POST['type']
-    start = request.POST['from']
-    end = request.POST['to']
+    city = request.POST.get('city')
+    types = request.POST.get('type')
+    start = request.POST.get('from')
+    end = request.POST.get('to')
 
-    if (city == 'NULL') & (types == 'NULL'):
+    if (city == '-1') & (types == '-1'):
         freelancer_list = []
 
         schedules = Schedule.objects.filter(date__range=(start, end), status=True)
@@ -119,7 +120,7 @@ def Search(request):
             freelancer_list.append(schedule.freelancer_id)
 
         freelancer = Freelancer.objects.all().exclude(pk__in=freelancer_list)
-    elif city == 'NULL':
+    elif city == '-1':
         user_list = []
         freelancer_list = []
         users = User.objects.filter(is_freelancer=True)
@@ -131,7 +132,7 @@ def Search(request):
             freelancer_list.append(schedule.freelancer_id)
 
         freelancer = Freelancer.objects.filter(type__id=types, user__in=user_list).exclude(pk__in=freelancer_list)
-    elif types == 'NULL':
+    elif types == '-1':
         user_list = []
         freelancer_list = []
         users = User.objects.filter(is_freelancer=True, city=city)
@@ -179,17 +180,17 @@ def Search(request):
 
 
 def AdvancedSearch(request):
-    city = request.POST['city']
-    types = request.POST['type']
-    start = request.POST['from']
-    end = request.POST['to']
-    pricerange = request.POST['price']
-    rate = request.POST['rating']
-    gender = request.POST['gender']
-    location = request.POST['location']
+    city = request.POST.get('city')
+    types = request.POST.get('type')
+    start = request.POST.get('from')
+    end = request.POST.get('to')
+    pricerange = request.POST.get('price')
+    rate = request.POST.get('rating')
+    gender = request.POST.get('gender')
+    location = request.POST.get('location')
 
 
-    if (city == 'NULL') & (types == 'NULL'):
+    if (city == '-1') & (types == '-1'):
         if gender == 'all':
             freelancer_list = []
 
@@ -207,7 +208,7 @@ def AdvancedSearch(request):
 
             freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5), gender=gender).exclude(
                 pk__in=freelancer_list)
-    elif city == 'NULL':
+    elif city == '-1':
         if gender == 'all':
             user_list = []
             freelancer_list = []
@@ -234,7 +235,7 @@ def AdvancedSearch(request):
             freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
                                                    rate__range=(rate, 5), user__in=user_list, gender=gender).exclude(
                 pk__in=freelancer_list)
-    elif types == 'NULL':
+    elif types == '-1':
         if gender == 'all':
             if location =='city1':
                 user_list = []
@@ -251,7 +252,7 @@ def AdvancedSearch(request):
             elif location == 'district':
                 user_list = []
                 freelancer_list = []
-                district = City.objects.get(pk=city).district
+                district = City.objects.get(pk=city).district.pk
                 city_list = []
                 cities = City.objects.filter(district=district)
                 for ct in cities:
@@ -270,7 +271,7 @@ def AdvancedSearch(request):
             else:
                 user_list = []
                 freelancer_list = []
-                province = City.objects.get(pk=city).district.pk
+                province = City.objects.get(pk=city).district.province.pk
                 district = District.objects.filter(province=province)
                 district_list = []
                 for dt in district:

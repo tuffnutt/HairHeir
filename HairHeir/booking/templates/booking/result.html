@@ -36,7 +36,7 @@ slider.oninput = function() {
                                     <div class="col-md-2">
                                         <div class="form-group ">
                                             <select id="type" class="form-control" name="type" required>
-                                                <option value="NULL">Type</option>
+                                                <option value="-1">Type</option>
                                                 {%for type in types%}
                                                 <option value="{{ type.pk}}">{{ type.name }}</option>
                                                 {%endfor%}
@@ -46,7 +46,7 @@ slider.oninput = function() {
                                     <div class="col-md-2">
                                         <div class="form-group ">
                                             <select id="city" class="form-control" name="city" required>
-                                                <option value="NULL"> City</option>
+                                                <option value="-1"> City</option>
                                                 {%for city in cities%}
                                                 <option value="{{ city.pk }}">{{ city.name }}</option>
                                                 {%endfor%}
@@ -252,19 +252,11 @@ var price = document.getElementById('price');
 var rating = document.getElementById('rating');
     rating.value = {{rating}};
 
+
 var type = document.getElementById('type');
     type.value = {{type}};
-var city = document.getElementById('city');
+
+    var city = document.getElementById('city');
     city.value = {{city}};
-
-function clear() {
-    document.getElementById('all').checked = true;
-    document.getElementById('city1').checked = true;
-    document.getElementById('price').value = "1000";
-    document.getElementById('rating').value = "0";
-    document.getElementById('type').value = "NULL";
-    document.getElementById('city').value = "NULL";
-}
-
 </script>
 {% endblock %}

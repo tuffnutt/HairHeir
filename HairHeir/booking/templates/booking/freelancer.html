@@ -33,7 +33,9 @@
 <div class="container">
     <div class="row profile">
         <div class="col-md-3">
-            <div class="profile-sidebar">
+            <br>
+               <h3>Profile</h3>
+            <div class="profile-sidebar" style="border:1px solid rgba(0,0,0,.125); height:500px">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
                     {%if users.freelancer.profile_picture%}
@@ -60,7 +62,7 @@
                 <!-- SIDEBAR BUTTONS -->
                 <div class="profile-userbuttons">
                     <button type="button" class="btn btn-success btn-sm">Favorite</button>
-                    <button type="button" class="btn btn-danger btn-sm">Book</button>
+                    <button type="button" class="btn btn-success btn-sm">Say Hi..!</button>
                 </div>
                 <!-- END SIDEBAR BUTTONS -->
                 <div class="stars">
@@ -123,113 +125,118 @@
         </div>
         <div class="container col-md-9">
             <div class="profile-content row">
-                <div class="col-sm-1 col-md-1 col-lg-1">
+
+
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                    <h3>Shedule</h3>
+                    <div style="border:1px solid rgba(0,0,0,.125); height:500px">
+
+                    <div class='input-group date' id='datetimepicker3' style="margin-left:40px">
+                    </div> <div style="border:1px solid rgba(0,0,0,.125);margin-left:5px;margin-right:5px">
+                            <p>Pick a date and click Book button or Add To Cart button to send a request to this user. The ash color dates are already booked by other clients. Yellow background
+                                date is today and blue color background date is your selected date. </p>
+                        </div>
+                    <div class="profile-userbuttons">
+                    <button type="button" class="btn btn-info btn-sm">Add To Cart</button>
+                    <button type="button" class="btn btn-warning btn-sm">Book</button>
                 </div>
 
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                    <h3>Shedule</h3>
-                    <div class='input-group date' id='datetimepicker3'>
-                    </div>
-
+                        </div>
 
                 </div>
                 <div class="col-sm-7 col-md-7 col-lg-7">
                     <h3>Gallery</h3>
-                    <div class="container">
-                        <div class="row" data-spy="scroll" style="height:330px;overflow-y: scroll;">
+                    <div class="container" style="border:1px solid rgba(0,0,0,.125); height:500px">
+                        <div class="row" data-spy="scroll" style="height:490px;overflow-y: scroll;">
 
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space " style="padding-bottom:10px">
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space " style="padding-bottom:10px">
                                 <!-- Trigger the modal with a button -->
                                 <img class="img-responsive"
-                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
-                                     data-toggle="modal" data-target="#myModal" height="100" width="100">
-                                <!-- Modal -->
-
-                            </div>
-
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
-                                <!-- Trigger the modal with a button -->
-                                <img class="img-responsive"
-                                     src=" http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg"
-                                     data-toggle="modal" data-target="#myModal1" height="100" width="100">
-                                <!-- Modal -->
-                            </div>
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
-                                <!-- Trigger the modal with a button -->
-                                <img class="img-responsive"
-                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
-                                     data-toggle="modal" data-target="#myModal2" height="100" width="100">
-                                <!-- Modal -->
-                            </div>
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space " style="padding-bottom:10px">
-                                <!-- Trigger the modal with a button -->
-                                <img class="img-responsive"
-                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
-                                     data-toggle="modal" data-target="#myModal" height="100" width="100">
+                                     src=" http://www.bravotv.com/sites/nbcubravotv/files/styles/blog-post--computer/public/field_blog_image/2017/01/personal-space-who-knows-your-pregnant.jpg?itok=cAjmQ2JQ&timestamp=1485192128"
+                                     data-toggle="modal" data-target="#myModal" height="150" width="150">
                                 <!-- Modal -->
 
                             </div>
 
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space" style="padding-bottom:10px">
                                 <!-- Trigger the modal with a button -->
                                 <img class="img-responsive"
-                                     src=" http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg"
-                                     data-toggle="modal" data-target="#myModal1" height="100" width="100">
+                                     src=" https://imgix.bustle.com/rehost/2016/9/13/b96e9feb-a29e-4f4f-8610-cf7f286b4f41.jpg?w=970&h=582&fit=crop&crop=faces&auto=format&q=70"
+                                     data-toggle="modal" data-target="#myModal1" height="150" width="150">
                                 <!-- Modal -->
                             </div>
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space" style="padding-bottom:10px">
                                 <!-- Trigger the modal with a button -->
                                 <img class="img-responsive"
-                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
-                                     data-toggle="modal" data-target="#myModal2" height="100" width="100">
+                                     src=" https://avalon.edu/wp-content/uploads/2013/04/shutterstock_136244102-e1513018160800.jpg"
+                                     data-toggle="modal" data-target="#myModal2" height="150" width="150">
                                 <!-- Modal -->
                             </div>
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space " style="padding-bottom:10px">
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space " style="padding-bottom:10px">
                                 <!-- Trigger the modal with a button -->
                                 <img class="img-responsive"
-                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
-                                     data-toggle="modal" data-target="#myModal" height="100" width="100">
-                                <!-- Modal -->
-
-                            </div>
-
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
-                                <!-- Trigger the modal with a button -->
-                                <img class="img-responsive"
-                                     src=" http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg"
-                                     data-toggle="modal" data-target="#myModal1" height="100" width="100">
-                                <!-- Modal -->
-                            </div>
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
-                                <!-- Trigger the modal with a button -->
-                                <img class="img-responsive"
-                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
-                                     data-toggle="modal" data-target="#myModal2" height="100" width="100">
-                                <!-- Modal -->
-                            </div>
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space " style="padding-bottom:10px">
-                                <!-- Trigger the modal with a button -->
-                                <img class="img-responsive"
-                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
-                                     data-toggle="modal" data-target="#myModal" height="100" width="100">
+                                     src=" https://cdnx.ogleschool.edu/wp-content/uploads/2013/12/hairstylist-at-work.jpg"
+                                     data-toggle="modal" data-target="#myModal3" height="150" width="150">
                                 <!-- Modal -->
 
                             </div>
 
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space">
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space" style="padding-bottom:10px">
                                 <!-- Trigger the modal with a button -->
                                 <img class="img-responsive"
-                                     src=" http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg"
-                                     data-toggle="modal" data-target="#myModal1" height="100" width="100">
+                                     src=" https://www.rd.com/wp-content/uploads/2016/02/06-13-things-your-hairstylist-wont-tell-you-cut-and-color-760x506.jpg"
+                                     data-toggle="modal" data-target="#myModal4" height="150" width="150">
                                 <!-- Modal -->
                             </div>
-                            <div class="col-md-4 col-lg-4 col-sm-6 img_space" style="padding-bottom:10px">
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space" style="padding-bottom:10px">
                                 <!-- Trigger the modal with a button -->
                                 <img class="img-responsive"
-                                     src=" https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg"
-                                     data-toggle="modal" data-target="#myModal2" height="100" width="100">
+                                     src=" https://www.rd.com/wp-content/uploads/2016/02/01-13-things-your-hairstylist-wont-tell-you-hard-to-work-with-760x506.jpg"
+                                     data-toggle="modal" data-target="#myModal5" height="150" width="150">
                                 <!-- Modal -->
                             </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space " style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src="https://www.rd.com/wp-content/uploads/2016/02/10-13-things-your-hairstylist-wont-tell-you-mixing-color-760x506.jpg"
+                                     data-toggle="modal" data-target="#myModal6" height="150" width="150">
+                                <!-- Modal -->
+
+                            </div>
+
+                             <div class="col-md-6 col-lg-6 col-sm-6 img_space " style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://cdnx.ogleschool.edu/wp-content/uploads/2013/12/hairstylist-at-work.jpg"
+                                     data-toggle="modal" data-target="#myModal3" height="150" width="150">
+                                <!-- Modal -->
+
+                            </div>
+
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space" style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.rd.com/wp-content/uploads/2016/02/06-13-things-your-hairstylist-wont-tell-you-cut-and-color-760x506.jpg"
+                                     data-toggle="modal" data-target="#myModal4" height="150" width="150">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space" style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src=" https://www.rd.com/wp-content/uploads/2016/02/01-13-things-your-hairstylist-wont-tell-you-hard-to-work-with-760x506.jpg"
+                                     data-toggle="modal" data-target="#myModal5" height="150" width="150">
+                                <!-- Modal -->
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6 img_space " style="padding-bottom:10px">
+                                <!-- Trigger the modal with a button -->
+                                <img class="img-responsive"
+                                     src="https://www.rd.com/wp-content/uploads/2016/02/10-13-things-your-hairstylist-wont-tell-you-mixing-color-760x506.jpg"
+                                     data-toggle="modal" data-target="#myModal6" height="150" width="150">
+                                <!-- Modal -->
+
+                            </div>
+
+
 
                         </div>
 
@@ -239,7 +246,7 @@
 
                                 <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
                                 <img class="img-responsive"
-                                     src="https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg">
+                                     src="http://www.bravotv.com/sites/nbcubravotv/files/styles/blog-post--computer/public/field_blog_image/2017/01/personal-space-who-knows-your-pregnant.jpg?itok=cAjmQ2JQ&timestamp=1485192128">
 
                             </div>
                         </div>
@@ -249,7 +256,7 @@
 
                                 <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
                                 <img class="img-responsive img-thumbnail"
-                                     src="http://ixfocus.com/projects/Intellia1/intelliaold/images/Birds-national-geographic-6873734-1600-1200.jpg">
+                                     src="https://imgix.bustle.com/rehost/2016/9/13/b96e9feb-a29e-4f4f-8610-cf7f286b4f41.jpg?w=970&h=582&fit=crop&crop=faces&auto=format&q=70">
                             </div>
                         </div>
 
@@ -258,7 +265,47 @@
 
                                 <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
                                 <img class="img-responsive img-thumbnail"
-                                     src="https://www.elastic.co/assets/bltada7771f270d08f6/enhanced-buzz-1492-1379411828-15.jpg">
+                                     src="https://avalon.edu/wp-content/uploads/2013/04/shutterstock_136244102-e1513018160800.jpg">
+
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal3" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
+                                <img class="img-responsive img-thumbnail"
+                                     src="https://cdnx.ogleschool.edu/wp-content/uploads/2013/12/hairstylist-at-work.jpg">
+
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal4" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
+                                <img class="img-responsive img-thumbnail"
+                                     src="https://www.rd.com/wp-content/uploads/2016/02/06-13-things-your-hairstylist-wont-tell-you-cut-and-color-760x506.jpg">
+
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal5" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
+                                <img class="img-responsive img-thumbnail"
+                                     src="https://www.rd.com/wp-content/uploads/2016/02/01-13-things-your-hairstylist-wont-tell-you-hard-to-work-with-760x506.jpg">
+
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal6" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content--><a href="#" class="close" data-dismiss="modal"> </a>
+                                <img class="img-responsive img-thumbnail"
+                                     src="https://www.rd.com/wp-content/uploads/2016/02/10-13-things-your-hairstylist-wont-tell-you-mixing-color-760x506.jpg">
 
                             </div>
                         </div>
@@ -268,8 +315,8 @@
             </div>
         </div>
 
-        <div class="comments">
-
+        <div class="comments" style="height:250px;overflow-y: scroll;border:1px solid rgba(0,0,0,.125);">
+<h3>Clients Reviews</h3>
             <div class="comment-wrap">
                 <div class="photo">
                     <div class="avatar"

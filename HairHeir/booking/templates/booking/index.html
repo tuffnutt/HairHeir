@@ -23,7 +23,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group ">
                                         <select id="type" class="form-control" name="type" required>
-                                            <option value="NULL" selected>Type</option>
+                                            <option value="-1">Type</option>
                                             {%for type in types%}
                                             <option value="{{ type.pk}}">{{ type.name }}</option>
                                             {%endfor%}
@@ -33,7 +33,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group ">
                                         <select id="city" class="form-control" name="city" required>
-                                            <option selected value="NULL"> City</option>
+                                            <option selected value="-1"> City</option>
                                             {%for city in cities%}
                                             <option value="{{ city.pk }}">{{ city.name }}</option>
                                             {%endfor%}

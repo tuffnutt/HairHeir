@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'booking.apps.BookingConfig',
     'crispy_forms',
+    'mixer',
 ]
 
 MIDDLEWARE = [

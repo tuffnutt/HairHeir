@@ -108,10 +108,3 @@ class Schedule(models.Model):
     saloon_id = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
     date = models.DateField(null=True)
     status = models.BooleanField(default=False)
-
-
-
-
-
-
-
