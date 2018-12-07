@@ -1,11 +1,10 @@
-from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory
 from django.urls import reverse
 from mixer.backend.django import mixer
-import pytest
 from booking.models import User, City
+from django.contrib.auth.models import AnonymousUser
 from booking.views import user, Search, AdvancedSearch
-
+import pytest
 
 @pytest.mark.django_db
 class TestViews:

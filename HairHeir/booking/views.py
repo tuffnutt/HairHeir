@@ -188,7 +188,9 @@ def AdvancedSearch(request):
     rate = request.POST.get('rating')
     gender = request.POST.get('gender')
     location = request.POST.get('location')
-
+    sorts =request.POST.get('sort')
+    if sorts == 'rate':
+        sorts = '-'+sorts
 
     if (city == '-1') & (types == '-1'):
         if gender == 'all':
@@ -198,7 +200,7 @@ def AdvancedSearch(request):
             for schedule in schedules:
                 freelancer_list.append(schedule.freelancer_id)
 
-            freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5)).exclude(pk__in=freelancer_list)
+            freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5)).exclude(pk__in=freelancer_list).order_by(sorts)
         else:
             freelancer_list = []
 
@@ -207,7 +209,7 @@ def AdvancedSearch(request):
                 freelancer_list.append(schedule.freelancer_id)
 
             freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5), gender=gender).exclude(
-                pk__in=freelancer_list)
+                pk__in=freelancer_list).order_by(sorts)
     elif city == '-1':
         if gender == 'all':
             user_list = []
@@ -220,7 +222,7 @@ def AdvancedSearch(request):
             for schedule in schedules:
                 freelancer_list.append(schedule.freelancer_id)
 
-            freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list)
+            freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list).order_by(sorts)
         else:
             user_list = []
             freelancer_list = []
@@ -234,7 +236,7 @@ def AdvancedSearch(request):
 
             freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
                                                    rate__range=(rate, 5), user__in=user_list, gender=gender).exclude(
-                pk__in=freelancer_list)
+                pk__in=freelancer_list).order_by(sorts)
     elif types == '-1':
         if gender == 'all':
             if location =='city1':
@@ -248,7 +250,7 @@ def AdvancedSearch(request):
                 for schedule in schedules:
                     freelancer_list.append(schedule.freelancer_id)
 
-                freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list)
+                freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list).order_by(sorts)
             elif location == 'district':
                 user_list = []
                 freelancer_list = []
@@ -267,7 +269,7 @@ def AdvancedSearch(request):
                     freelancer_list.append(schedule.freelancer_id)
 
                 freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
-                                                       user__in=user_list).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list).exclude(pk__in=freelancer_list).order_by(sorts)
             else:
                 user_list = []
                 freelancer_list = []
@@ -290,7 +292,7 @@ def AdvancedSearch(request):
                     freelancer_list.append(schedule.freelancer_id)
 
                 freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
-                                                       user__in=user_list).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list).exclude(pk__in=freelancer_list).order_by(sorts)
         else:
             if location == 'city1':
                 user_list = []
@@ -304,7 +306,7 @@ def AdvancedSearch(request):
                     freelancer_list.append(schedule.freelancer_id)
 
                 freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
-                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list).order_by(sorts)
             elif location == 'district':
                 user_list = []
                 freelancer_list = []
@@ -323,7 +325,7 @@ def AdvancedSearch(request):
                     freelancer_list.append(schedule.freelancer_id)
 
                 freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
-                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list).order_by(sorts)
             else:
                 user_list = []
                 freelancer_list = []
@@ -346,7 +348,7 @@ def AdvancedSearch(request):
                     freelancer_list.append(schedule.freelancer_id)
 
                 freelancer = Freelancer.objects.filter(price__range=(0.0, pricerange), rate__range=(rate, 5),
-                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list).order_by(sorts)
     else:
         if gender == 'all':
             if location =='city1':
@@ -360,7 +362,7 @@ def AdvancedSearch(request):
                 for schedule in schedules:
                     freelancer_list.append(schedule.freelancer_id)
 
-                freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list)
+                freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5), user__in=user_list).exclude(pk__in=freelancer_list).order_by(sorts)
             elif location == 'district':
                 user_list = []
                 freelancer_list = []
@@ -379,7 +381,7 @@ def AdvancedSearch(request):
                     freelancer_list.append(schedule.freelancer_id)
 
                 freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5),
-                                                       user__in=user_list).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list).exclude(pk__in=freelancer_list).order_by(sorts)
             else:
                 user_list = []
                 freelancer_list = []
@@ -402,7 +404,7 @@ def AdvancedSearch(request):
                     freelancer_list.append(schedule.freelancer_id)
 
                 freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange), rate__range=(rate, 5),
-                                                       user__in=user_list).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list).exclude(pk__in=freelancer_list).order_by(sorts)
         else:
             if location == 'city1':
                 user_list = []
@@ -417,7 +419,7 @@ def AdvancedSearch(request):
 
                 freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
                                                        rate__range=(rate, 5), user__in=user_list, gender=gender).exclude(
-                    pk__in=freelancer_list)
+                    pk__in=freelancer_list).order_by(sorts)
             elif location == 'district':
                 user_list = []
                 freelancer_list = []
@@ -437,7 +439,7 @@ def AdvancedSearch(request):
 
                 freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
                                                        rate__range=(rate, 5),
-                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list).order_by(sorts)
             else:
                 user_list = []
                 freelancer_list = []
@@ -461,7 +463,7 @@ def AdvancedSearch(request):
 
                 freelancer = Freelancer.objects.filter(type__id=types, price__range=(0.0, pricerange),
                                                        rate__range=(rate, 5),
-                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list)
+                                                       user__in=user_list, gender=gender).exclude(pk__in=freelancer_list).order_by(sorts)
 
 
 

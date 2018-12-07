@@ -1,0 +1,9 @@
+[
+  "HairHeir/booking/tests/test_urls.py::TestUrls::test_user",
+  "HairHeir/booking/tests/test_urls.py::TestUrls::test_search",
+  "HairHeir/booking/tests/test_urls.py::TestUrls::test_home",
+  "HairHeir/booking/tests/test_urls.py::TestUrls::test_advancedsearch",
+  "HairHeir/booking/tests/test_urls.py::TestUrls::test_signup",
+  "HairHeir/booking/tests/test_urls.py::TestUrls::test_client_signup",
+  "HairHeir/booking/tests/test_urls.py::TestUrls::test_freelancer_signup"
+]
